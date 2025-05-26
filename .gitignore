@@ -1,1 +1,10 @@
+# .gitignore
+*.env
+*.pyc
+__pycache__/
+db.sqlite3
+firebase_config.py
+firebaseKey
+
+
 node_modules/

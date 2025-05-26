@@ -1,0 +1,369 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Opportunities - Alumni Association</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --primary-light: #3a516e;
+            --secondary: #2980b9;
+            --secondary-light: #3498db;
+            --light: #f8f9fa;
+            --light-gray: #e9ecef;
+            --medium-gray: #dee2e6;
+            --dark-gray: #495057;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+            --transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--primary);
+            line-height: 1.6;
+            font-size: 0.9rem;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #f5f9fc 0%, #e6f0f7 100%);
+        }
+
+        /* Animated Background Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            background: rgba(41, 128, 185, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: var(--white);
+            color: var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+        .back-button:hover {
+            background: var(--light-gray);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Header */
+        .job-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--white);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-md);
+            position: relative;
+        }
+        .job-header h1 {
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        /* Search Container */
+        .search-container {
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        #jobSearch {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            font-size: 0.85rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: 0.375rem;
+            background-color: var(--white);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%232c3e50' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 1rem center;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        #jobSearch:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(41, 128, 185, 0.15);
+        }
+
+        /* Job List */
+        .job-list {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Enhanced Job Card */
+        .job-card {
+            background-color: var(--white);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            border-top: 3px solid var(--secondary);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-top-color: var(--secondary-light);
+        }
+        .job-card-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .job-card h2 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            font-weight: 600;
+            line-height: 1.3;
+        }
+        .job-card p {
+            font-size: 0.8rem;
+            margin-bottom: 0.75rem;
+            color: var(--dark-gray);
+            display: flex;
+            align-items: flex-start;
+        }
+        .job-card p strong {
+            font-weight: 500;
+            color: var(--primary);
+            min-width: 80px;
+            display: inline-block;
+        }
+        .job-card p i {
+            margin-right: 8px;
+            color: var(--secondary);
+            width: 16px;
+            text-align: center;
+        }
+        .job-card .apply-btn {
+            display: inline-block;
+            margin-top: auto;
+            padding: 0.6rem 1.25rem;
+            background-color: var(--secondary);
+            color: var(--white);
+            border: none;
+            border-radius: 0.3rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+            align-self: flex-start;
+            text-align: center;
+        }
+        .job-card .apply-btn:hover {
+            background-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Empty State */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            color: var(--dark-gray);
+            font-size: 0.9rem;
+            background: var(--white);
+            border-radius: 0.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .job-list {
+                grid-template-columns: 1fr;
+            }
+            .job-header h1 {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background Particles -->
+    <div class="particles" id="particles"></div>
+
+    <a href="javascript:history.back()" class="back-button">
+        <i class="fas fa-chevron-left"></i>
+    </a>
+
+    <header class="job-header">
+        <h1><i class="fas fa-briefcase mr-1"></i> Job Opportunities</h1>
+    </header>
+
+   
+
+    <div class="job-list">
+        {% for job in jobs %}
+        <div class="job-card">
+            <div class="job-card-content">
+                <h2>{{ job.title }}</h2>
+                <p><strong><i class="fas fa-building"></i>Company:</strong> {{ job.company }}</p>
+                <p><strong><i class="fas fa-map-marker-alt"></i>Location:</strong> {{ job.location }}</p>
+                <p><strong><i class="fas fa-chart-line"></i>Experience:</strong> {{ job.experience }}+ years</p>
+                <p><strong><i class="fas fa-align-left"></i>Description:</strong> {{ job.description }}</p>
+                <a href="{% url 'applyme' %}" class="apply-btn">Apply Now</a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="empty-state">
+            <p>No job postings available at the moment. Please check back later!</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+    <script>
+        // Animated Background Particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = window.innerWidth < 768 ? 20 : 40;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random properties
+                const size = Math.random() * 10 + 5;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 15;
+                const duration = Math.random() * 10 + 10;
+                
+                particle.style.width = ${size}px;
+                particle.style.height = ${size}px;
+                particle.style.left = ${posX}%;
+                particle.style.top = ${posY}%;
+                particle.style.animationDelay = ${delay}s;
+                particle.style.animationDuration = ${duration}s;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Initialize particles on load
+        window.addEventListener('load', createParticles);
+
+        // Job Search Functionality
+        function searchJobs() {
+            let input = document.getElementById("jobSearch").value.toLowerCase();
+            let jobCards = document.querySelectorAll(".job-card");
+
+            jobCards.forEach(card => {
+                let title = card.querySelector("h2").innerText.toLowerCase();
+                let company = card.querySelector("p:nth-of-type(1)").innerText.toLowerCase();
+                if (title.includes(input) || company.includes(input)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        // Firebase Integration (example)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID",
+        };
+        
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore(app);
+        
+        db.collection("job_postings").orderBy("postedAt", "desc").get()
+            .then((querySnapshot) => {
+                const jobListSection = document.querySelector(".job-list");
+                jobListSection.innerHTML = "";
+
+                if (querySnapshot.empty) {
+                    jobListSection.innerHTML = `
+                        <div class="empty-state">
+                            <p>No job postings available at the moment. Please check back later!</p>
+                        </div>`;
+                } else {
+                    querySnapshot.forEach((doc) => {
+                        const job = doc.data();
+                        const jobCard = document.createElement("div");
+                        jobCard.className = "job-card";
+                        jobCard.innerHTML = `
+                            <div class="job-card-content">
+                                <h2>${job.title}</h2>
+                                <p><strong><i class="fas fa-building"></i>Company:</strong> ${job.company}</p>
+                                <p><strong><i class="fas fa-map-marker-alt"></i>Location:</strong> ${job.location}</p>
+                                <p><strong><i class="fas fa-chart-line"></i>Experience:</strong> ${job.experience}+ years</p>
+                                <p><strong><i class="fas fa-align-left"></i>Description:</strong> ${job.description}</p>
+                                <a href="{% url 'applyme' %}" class="apply-btn">Apply Now</a>
+                            </div>
+                        `;
+                        jobListSection.appendChild(jobCard);
+                    });
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching jobs: ", error);
+                const jobListSection = document.querySelector(".job-list");
+                jobListSection.innerHTML = `
+                    <div class="empty-state">
+                        <p>Unable to load job postings. Please try again later.</p>
+                    </div>`;
+            });
+    </script>
+</body>
+</html>

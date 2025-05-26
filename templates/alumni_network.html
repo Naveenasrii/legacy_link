@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Alumni Network</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+    }
+
+    header {
+      background: linear-gradient(135deg, #003366 0%, #0055a5 100%);
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .back-button {
+      position: absolute;
+      left: 20px;
+      color: white;
+      text-decoration: none;
+      font-size: 24px;
+      background: rgba(255,255,255,0.2);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+      background: rgba(255,255,255,0.3);
+      transform: scale(1.1);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      margin-left: 60px;
+    }
+
+    .logo span {
+      font-size: 22px;
+      font-weight: bold;
+      color: white;
+      letter-spacing: 1px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+    }
+
+    nav ul li {
+      margin: 0 15px;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+    }
+
+    nav ul li a:hover {
+      transform: translateY(-2px);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .search-container {
+      display: flex;
+      justify-content: center;
+      margin: 30px auto;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .search-bar {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 30px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      min-width: 0;
+    }
+
+    .search-bar input:focus {
+      outline: none;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.15);
+      transform: translateY(-2px);
+    }
+
+    .search-bar button {
+      padding: 12px 25px;
+      background: linear-gradient(135deg, #003366 0%, #0055a5 100%);
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 30px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      white-space: nowrap;
+    }
+
+    .search-bar button:hover {
+      background: linear-gradient(135deg, #004080 0%, #0066cc 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    /* Enhanced Profile Card */
+    .profile-card {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: 0 auto 40px auto;
+      display: none;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(90deg, #003366, #0055a5);
+    }
+
+    .profile-image-container {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 20px auto;
+    }
+
+    .profile-card img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 5px solid white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+    .profile-image-container::before {
+      content: "";
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      background: linear-gradient(135deg, #003366, #0055a5);
+      border-radius: 50%;
+      top: -5px;
+      left: -5px;
+      z-index: 1;
+      animation: rotate 6s linear infinite;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .profile-card:hover img {
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      align-items: center;
+    }
+
+    .form-group:last-child {
+      border-bottom: none;
+    }
+
+    .form-group strong {
+      display: inline-block;
+      width: 100px;
+      color: #003366;
+      font-weight: 600;
+    }
+
+    .form-group input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 15px;
+      color: #333;
+      padding: 8px 10px;
+      border-radius: 5px;
+      transition: all 0.2s ease;
+    }
+
+    .form-group input:disabled {
+      background: #f9f9f9;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      background: #f0f7ff;
+    }
+
+    /* Loading animation */
+    .loading {
+      display: none;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .loading-spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #003366;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .search-bar {
+        flex-direction: column;
+      }
+      
+      .search-bar input {
+        width: 100%;
+      }
+      
+      .search-bar button {
+        width: 100%;
+      }
+      
+      nav ul li {
+        margin: 0 10px;
+      }
+      
+      nav ul li a {
+        font-size: 14px;
+      }
+      
+      .profile-card {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .logo span {
+        font-size: 18px;
+      }
+      
+      nav ul {
+        flex-direction: column;
+        align-items: flex-end;
+      }
+      
+      nav ul li {
+        margin: 5px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="javascript:history.back()" class="back-button">←</a>
+
+    <div class="logo">
+      <span>LEGACY LINK</span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="{% url 'alumni_dashboard' %}">🏠 Dashboard</a></li>
+        <li><a href="{% url 'alumni_jobboard' %}">💼 Job Board</a></li>
+        <li><a href="{% url 'homepage' %}">🚪 Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="search-container">
+    <div class="search-bar">
+      <input type="text" id="search" placeholder="Search alumni by full name...">
+      <button onclick="searchAlumni()">🔍 Search</button>
+    </div>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="loading-spinner"></div>
+    <p>Searching alumni...</p>
+  </div>
+
+  <section class="profile-card" id="profileCard">
+    <div class="profile-image-container">
+      <img id="profileImage" src="https://via.placeholder.com/150" alt="Profile Picture">
+    </div>
+    <div class="form-group"><strong>Name:</strong> <input type="text" id="name" disabled></div>
+    <div class="form-group"><strong>Batch:</strong> <input type="text" id="batch" disabled></div>
+    <div class="form-group"><strong>Job Title:</strong> <input type="text" id="jobTitle" disabled></div>
+    <div class="form-group"><strong>Industry:</strong> <input type="text" id="industry" disabled></div>
+    <div class="form-group"><strong>Company:</strong> <input type="text" id="company" disabled></div>
+    <div class="form-group"><strong>Location:</strong> <input type="text" id="location" disabled></div>
+    <div class="form-group"><strong>Skills:</strong> <input type="text" id="skills" disabled></div>
+    <div class="form-group"><strong>Email:</strong> <input type="email" id="email" disabled></div>
+    <div class="form-group"><strong>LinkedIn:</strong> <input type="url" id="linkedin" disabled></div>
+    <div class="form-group"><strong>Website:</strong> <input type="url" id="website" disabled></div>
+  </section>
+
+  <section id="alumni-results">
+    <!-- Optionally keep for grid or multiple results -->
+  </section>
+
+  <!-- Firebase SDK and Firestore logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+    import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyA3AJjjQBebsndzTO2-n524qz8BV5bGCtI",
+      authDomain: "first-be575.firebaseapp.com",
+      projectId: "first-be575",
+      storageBucket: "first-be575.appspot.com",
+      messagingSenderId: "597942238551",
+      appId: "1:597942238551:web:8c78d8c153c5fa5f4e5212",
+      measurementId: "G-S4QZTD5DPC"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.searchAlumni = async function () {
+      const name = document.getElementById('search').value.trim();
+      if (!name) {
+        alert("Please enter a name to search.");
+        return;
+      }
+
+      try {
+        // Show loading animation
+        document.getElementById("loading").style.display = "block";
+        document.getElementById("profileCard").style.display = "none";
+
+        const alumniRef = collection(db, "alumni");
+        const q = query(alumniRef, where("name", "==", name));
+        const querySnapshot = await getDocs(q);
+
+        // Hide loading animation
+        document.getElementById("loading").style.display = "none";
+
+        if (querySnapshot.empty) {
+          alert("No alumni found with that name.");
+          return;
+        }
+
+        const doc = querySnapshot.docs[0].data();
+
+        // Populate profile card
+        document.getElementById("name").value = doc.name || '';
+        document.getElementById("batch").value = doc.batch || '';
+        document.getElementById("jobTitle").value = doc.job_title || '';
+        document.getElementById("industry").value = doc.industry || '';
+        document.getElementById("company").value = doc.company || '';
+        document.getElementById("location").value = doc.location || '';
+        document.getElementById("skills").value = doc.skills || '';
+        document.getElementById("email").value = doc.email || '';
+        document.getElementById("linkedin").value = doc.linkedin || '';
+        document.getElementById("website").value = doc.website || '';
+        document.getElementById("profileImage").src = doc.profile_picture || 'https://via.placeholder.com/150';
+
+        // Show profile card with animation
+        document.getElementById("profileCard").style.display = "block";
+        
+        // Add animation effect
+        document.getElementById("profileCard").style.opacity = "0";
+        document.getElementById("profileCard").style.transform = "translateY(20px)";
+        setTimeout(() => {
+          document.getElementById("profileCard").style.opacity = "1";
+          document.getElementById("profileCard").style.transform = "translateY(0)";
+        }, 50);
+
+      } catch (error) {
+        document.getElementById("loading").style.display = "none";
+        console.error("Error fetching alumni:", error);
+        alert("Something went wrong while searching.");
+      }
+    }
+  </script>
+</body>
+</html>

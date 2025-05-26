@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📬 Messages from Students</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3a0ca3;
+      --accent-color: #4cc9f0;
+      --light-color: #f8f9fa;
+      --dark-color: #212529;
+      --success-color: #2ecc71;
+      --warning-color: #f39c12;
+      --danger-color: #e74c3c;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      line-height: 1.6;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+      color: var(--dark-color);
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      padding: 30px;
+      position: relative;
+      padding-bottom: 80px; /* Space for fixed reply button */
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    h1 {
+      color: var(--secondary-color);
+      font-size: 28px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    h1 i {
+      color: var(--accent-color);
+    }
+    
+    .badge {
+      background: var(--accent-color);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .search-bar {
+      display: flex;
+      margin-bottom: 25px;
+    }
+    
+    .search-bar input {
+      flex: 1;
+      padding: 12px 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px 0 0 8px;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+    
+    .search-bar input:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(76, 201, 240, 0.2);
+    }
+    
+    .search-bar button {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0 20px;
+      border-radius: 0 8px 8px 0;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .search-bar button:hover {
+      background: var(--secondary-color);
+    }
+    
+    .message-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .message {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .message:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    }
+    
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      background: rgba(67, 97, 238, 0.05);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    
+    .message-header:hover {
+      background: rgba(67, 97, 238, 0.1);
+    }
+    
+    .message-header.active {
+      background: rgba(67, 97, 238, 0.15);
+    }
+    
+    .sender-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .sender-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-color);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 18px;
+    }
+    
+    .sender-name {
+      font-weight: 500;
+      color: var(--secondary-color);
+    }
+    
+    .message-count {
+      background: var(--accent-color);
+      color: white;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 12px;
+      margin-left: 8px;
+    }
+    
+    .message-time {
+      font-size: 13px;
+      color: #777;
+    }
+    
+    .message-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+    }
+    
+    .message-content.active {
+      max-height: 300px;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    
+    .message-item {
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .message-item:last-child {
+      border-bottom: none;
+    }
+    
+    .message-text {
+      margin-bottom: 10px;
+      line-height: 1.7;
+    }
+    
+    .message-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: #777;
+    }
+    
+    .message-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .btn-primary {
+      background: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+    
+    .btn-outline:hover {
+      background: rgba(67, 97, 238, 0.1);
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 50px 20px;
+      color: #777;
+    }
+    
+    .empty-state i {
+      font-size: 50px;
+      color: #ddd;
+      margin-bottom: 20px;
+    }
+    
+    .empty-state h3 {
+      font-weight: 500;
+      margin-bottom: 10px;
+      color: var(--dark-color);
+    }
+    
+    .loading {
+      display: flex;
+      justify-content: center;
+      padding: 40px;
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(67, 97, 238, 0.1);
+      border-radius: 50%;
+      border-top-color: var(--primary-color);
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    /* Fixed reply button styles */
+    .fixed-reply-container {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+      display: none;
+      width: calc(100% - 40px);
+      max-width: 860px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .fixed-reply-btn {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px 15px;
+        padding-bottom: 80px;
+      }
+      
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      
+      .message-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      
+      .message-time {
+        align-self: flex-end;
+      }
+      
+      .fixed-reply-container {
+        width: calc(100% - 30px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-inbox"></i> Your Messages</h1>
+      <div class="badge" id="messageCount">Loading...</div>
+    </header>
+    
+    <div class="search-bar">
+      <input type="text" placeholder="Search messages..." id="searchInput">
+      <button type="button"><i class="fas fa-search"></i></button>
+    </div>
+    
+    <div class="message-list" id="messagesContainer">
+      <div class="loading">
+        <div class="spinner"></div>
+      </div>
+    </div>
+    
+    <!-- Fixed reply button container (initially hidden) -->
+    <div class="fixed-reply-container" id="fixedReplyContainer">
+      <button class="btn btn-primary fixed-reply-btn" id="fixedReplyBtn">
+        <i class="fas fa-reply"></i> Reply to naveenasri
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Store the alumni's chat ID from Django context into localStorage
+    const alumniChatID = "{{ logged_in_alumni_chat_id|escapejs }}";
+    if (alumniChatID && alumniChatID.includes('_')) {
+      localStorage.setItem("alumniChatID", alumniChatID);
+    } else {
+      alert("❌ Invalid chat ID passed from backend.");
+    }
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      query,
+      orderBy
+    } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyA3AJjjQBebsndzTO2-n524qz8BV5bGCtI",
+      authDomain: "first-be575.firebaseapp.com",
+      projectId: "first-be575",
+      storageBucket: "first-be575.appspot.com",
+      messagingSenderId: "597942238551",
+      appId: "1:597942238551:web:8c78d8c153c5fa5f4e5212"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const alumniChatID = localStorage.getItem("alumniChatID");
+    const messagesContainer = document.getElementById("messagesContainer");
+    const messageCountElement = document.getElementById("messageCount");
+    const searchInput = document.getElementById("searchInput");
+    const fixedReplyContainer = document.getElementById("fixedReplyContainer");
+    const fixedReplyBtn = document.getElementById("fixedReplyBtn");
+
+    // Function to get initials from name
+    function getInitials(name) {
+      return name.split(' ').map(n => n[0]).join('').toUpperCase();
+    }
+
+    // Track if naveenasri's messages are open
+    let naveenasriOpen = false;
+
+    async function loadMessages() {
+      if (!alumniChatID) {
+        messagesContainer.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-exclamation-circle"></i>
+            <h3>Chat ID not found!</h3>
+            <p>Please refresh the page or contact support.</p>
+          </div>
+        `;
+        return;
+      }
+
+      try {
+        const chatRef = collection(db, "chats", alumniChatID, "messages");
+        const q = query(chatRef, orderBy("timestamp", "asc"));
+
+        const snapshot = await getDocs(q);
+        
+        if (snapshot.empty) {
+          messagesContainer.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-inbox"></i>
+              <h3>No messages yet</h3>
+              <p>When students message you, they'll appear here.</p>
+            </div>
+          `;
+          messageCountElement.textContent = "0 messages";
+          return;
+        }
+
+        const groupedMessages = {};
+        let totalMessages = 0;
+
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          const sender = data.sender || "Unknown";
+
+          // Skip messages from alumni
+          if (sender === "alumni2") {
+            return;
+          }
+
+          if (!groupedMessages[sender]) {
+            groupedMessages[sender] = [];
+          }
+          groupedMessages[sender].push(data);
+          totalMessages++;
+        });
+
+        // Update message count badge
+        messageCountElement.textContent = `${totalMessages} message${totalMessages !== 1 ? 's' : ''}`;
+
+        // Clear loading state
+        messagesContainer.innerHTML = '';
+
+        // Create message elements for each sender
+        for (const sender in groupedMessages) {
+          const messages = groupedMessages[sender];
+          const messageCount = messages.length;
+          
+          const messageElement = document.createElement("div");
+          messageElement.className = "message";
+          
+          // Message header
+          const header = document.createElement("div");
+          header.className = "message-header";
+          
+          const senderInfo = document.createElement("div");
+          senderInfo.className = "sender-info";
+          
+          const avatar = document.createElement("div");
+          avatar.className = "sender-avatar";
+          avatar.textContent = getInitials(sender);
+          
+          const name = document.createElement("div");
+          name.className = "sender-name";
+          name.innerHTML = `${sender} <span class="message-count">${messageCount}</span>`;
+          
+          const time = document.createElement("div");
+          time.className = "message-time";
+          // Get the latest message time
+          const latestMessage = messages[messages.length - 1];
+          time.textContent = latestMessage.timestamp?.toDate().toLocaleString() || "Unknown time";
+          
+          senderInfo.appendChild(avatar);
+          senderInfo.appendChild(name);
+          header.appendChild(senderInfo);
+          header.appendChild(time);
+          
+          // Message content
+          const content = document.createElement("div");
+          content.className = "message-content";
+          
+          messages.forEach((msg, index) => {
+            const messageItem = document.createElement("div");
+            messageItem.className = "message-item";
+            
+            const text = document.createElement("div");
+            text.className = "message-text";
+            text.textContent = msg.message;
+            
+            const meta = document.createElement("div");
+            meta.className = "message-meta";
+            
+            const timestamp = document.createElement("span");
+            timestamp.textContent = msg.timestamp?.toDate().toLocaleString() || "Unknown time";
+            
+            meta.appendChild(timestamp);
+            
+            messageItem.appendChild(text);
+            messageItem.appendChild(meta);
+            
+            content.appendChild(messageItem);
+          });
+          
+          // Toggle functionality
+          header.addEventListener("click", () => {
+            header.classList.toggle("active");
+            content.classList.toggle("active");
+            
+            // Show/hide fixed reply for naveenasri
+            if (sender.toLowerCase() === "naveenasri") {
+              naveenasriOpen = content.classList.contains("active");
+              fixedReplyContainer.style.display = naveenasriOpen ? "block" : "none";
+            }
+          });
+          
+          messageElement.appendChild(header);
+          messageElement.appendChild(content);
+          messagesContainer.appendChild(messageElement);
+        }
+        
+        // Set up reply button click handler
+        fixedReplyBtn.addEventListener("click", () => {
+          const baseReplyUrl = "{% url 'reply' %}";
+          window.location.href = `${baseReplyUrl}?student=naveenasri`;
+        });
+        
+        // Add search functionality
+        searchInput.addEventListener("input", (e) => {
+          const searchTerm = e.target.value.toLowerCase();
+          const messageElements = document.querySelectorAll(".message");
+          
+          messageElements.forEach(element => {
+            const senderName = element.querySelector(".sender-name").textContent.toLowerCase();
+            const messageTexts = Array.from(element.querySelectorAll(".message-text")).map(el => el.textContent.toLowerCase());
+            
+            if (senderName.includes(searchTerm) || messageTexts.some(text => text.includes(searchTerm))) {
+              element.style.display = "block";
+            } else {
+              element.style.display = "none";
+            }
+          });
+        });
+        
+      } catch (error) {
+        console.error("Error loading messages:", error);
+        messagesContainer.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>Error loading messages</h3>
+            <p>Please try again later or contact support.</p>
+          </div>
+        `;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadMessages);
+  </script>
+</body>
+</html>

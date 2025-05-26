@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Announcements | Legacy Link</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #003366;
+            --secondary-color: #0055a5;
+            --accent-color: #ff6b6b;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --text-color: #495057;
+            --border-radius: 8px;
+            --box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .logo span {
+            background: linear-gradient(to right, #fff, #ddd);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .announcement-section {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        
+        .announcement-section h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .announcement-section h2::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--accent-color);
+            margin: 0.5rem auto;
+            border-radius: 2px;
+        }
+        
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .filter {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .filter label {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        .filter select {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            background-color: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .filter select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(0, 51, 102, 0.2);
+        }
+        
+        .announcements {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .announcement-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            border-top: 4px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .announcement-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .announcement-card[data-category="job"] {
+            border-top-color: #4CAF50;
+        }
+        
+        .announcement-card[data-category="event"] {
+            border-top-color: #FF9800;
+        }
+        
+        .announcement-card[data-category="news"] {
+            border-top-color: #2196F3;
+        }
+        
+        .announcement-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .announcement-card p {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            color: var(--text-color);
+        }
+        
+        .announcement-card p strong {
+            color: var(--dark-color);
+        }
+        
+        .announcement-card .card-footer {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .announcement-card a {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1.25rem;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .announcement-card a:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+        
+        .category-tag {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-bottom-left-radius: var(--border-radius);
+        }
+        
+        .announcement-card[data-category="job"] .category-tag {
+            background: #4CAF50;
+        }
+        
+        .announcement-card[data-category="event"] .category-tag {
+            background: #FF9800;
+        }
+        
+        .announcement-card[data-category="news"] .category-tag {
+            background: #2196F3;
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .announcements {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <span>LEGACY LINK</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'alumni_dashboard' %}"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="{% url 'alumni_network' %}"><i class="fas fa-network-wired"></i> Alumni Network</a></li>
+                <li><a href="{% url 'alumni_jobboard' %}"><i class="fas fa-briefcase"></i> Job Board</a></li>
+                <li><a href="{% url 'homepage' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="announcement-section">
+        <h2><i class="fas fa-bullhorn"></i> Alumni Announcements</h2>
+
+        <div class="filter-container">
+            <div class="filter">
+                <label for="category"><i class="fas fa-filter"></i> Filter by Category:</label>
+                <select id="category" onchange="filterAnnouncements()">
+                    <option value="all">All Announcements</option>
+                    <option value="job">Job Opportunities</option>
+                    <option value="event">Events</option>
+                    <option value="news">University News</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="announcements">
+            
+            <div class="announcement-card" data-category="event">
+                <span class="category-tag">Event</span>
+                <h3><i class="fas fa-calendar-alt"></i> Alumni Meetup 2025</h3>
+                <p><strong><i class="far fa-calendar"></i> Date:</strong> April 15, 2025</p>
+                <p><strong><i class="fas fa-map-marked-alt"></i> Location:</strong> PSG Tech, Coimbatore</p>
+                <p>Reconnect with old friends, expand your professional network, and relive your college days!</p>
+                <div class="card-footer">
+                    <a href="{% url 'alumni_meetup_register' %}"><i class="fas fa-user-plus"></i> Register Now</a>
+                </div>
+            </div>
+
+            <div class="announcement-card" data-category="news">
+                <span class="category-tag">University News</span>
+                <h3><i class="fas fa-trophy"></i> PSG Tech Ranked Among Top 10 Engineering Colleges!</h3>
+                <p>We are proud to announce that PSG Tech has been ranked in the <strong>Top 10 Engineering Colleges in India</strong> by NIRF 2025!</p>
+                <div class="card-footer">
+                    <a href="{% url 'psg_college' %}"><i class="fas fa-newspaper"></i> Read More</a>
+                </div>
+            </div>
+            
+            <!-- Additional sample announcements -->
+        
+            <div class="announcement-card" data-category="event">
+                <span class="category-tag">Event</span>
+                <h3><i class="fas fa-graduation-cap"></i> Annual Alumni Awards 2025</h3>
+                <p><strong><i class="far fa-calendar"></i> Date:</strong> May 20, 2025</p>
+                <p><strong><i class="fas fa-map-marked-alt"></i> Location:</strong> Virtual Event</p>
+                <p>Join us to celebrate the outstanding achievements of our alumni community.</p>
+                <div class="card-footer">
+                    <a href="{% url 'alumni_awards' %}"><i class="fas fa-user-plus"></i> RSVP Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function filterAnnouncements() {
+            const category = document.getElementById("category").value;
+            const announcements = document.querySelectorAll(".announcement-card");
+            
+            announcements.forEach(announcement => {
+                if (category === "all" || announcement.getAttribute("data-category") === category) {
+                    announcement.style.display = "block";
+                } else {
+                    announcement.style.display = "none";
+                }
+            });
+        }
+        
+        // Initialize by showing all announcements
+        document.addEventListener('DOMContentLoaded', function() {
+            filterAnnouncements();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alumni Login - Legacy Link</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-blue: #083971;
+      --dark-blue: #062d5f;
+      --light-purple: rgba(193, 180, 232, 0.95);
+      --white: #ffffff;
+      --gray: #cccccc;
+      --error-red: #e74c3c;
+      --success-green: #2ecc71;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-image: url("{% static 'images/alumni_login.jpg' %}");
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      position: relative;
+    }
+    
+    .page-back-button {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      font-size: 24px;
+      color: var(--white);
+      background: rgba(0,0,0,0.3);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    
+    .page-back-button:hover {
+      background: rgba(0,0,0,0.5);
+      transform: translateX(-3px);
+    }
+    
+    .login-container {
+      background: var(--light-purple);
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+      width: 380px;
+      margin-right: 80px;
+      backdrop-filter: blur(2px);
+    }
+    
+    .login-container h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--primary-blue);
+      font-weight: 600;
+      font-size: 28px;
+    }
+    
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .input-box {
+      position: relative;
+    }
+    
+    .input-box input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--gray);
+      border-radius: 8px;
+      font-size: 15px;
+      background: var(--white);
+      transition: all 0.3s ease;
+    }
+    
+    .input-box input:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 0 3px rgba(8, 57, 113, 0.2);
+    }
+    
+    button[type="submit"] {
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background-color: var(--primary-blue);
+      color: var(--white);
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+    
+    button[type="submit"]:hover {
+      background-color: var(--dark-blue);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .forgot-password {
+      text-align: center;
+      margin: -10px 0;
+    }
+    
+    .forgot-password a {
+      color: var(--primary-blue);
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.2s ease;
+    }
+    
+    .forgot-password a:hover {
+      text-decoration: underline;
+    }
+    
+    .signup-link {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--primary-blue);
+    }
+    
+    .signup-link a {
+      color: var(--primary-blue);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    
+    .signup-link a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Messages */
+    .messages {
+      margin-bottom: 20px;
+    }
+    
+    .messages ul {
+      list-style-type: none;
+      padding: 12px;
+      background-color: rgba(231, 76, 60, 0.1);
+      border-radius: 8px;
+      color: var(--error-red);
+      font-size: 14px;
+      margin: 0;
+    }
+    
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .modal-content {
+      background-color: var(--white);
+      padding: 30px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      position: relative;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+    }
+    
+    .modal.active .modal-content {
+      transform: translateY(0);
+    }
+    
+    .modal-content h3 {
+      color: var(--primary-blue);
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 22px;
+    }
+    
+    .modal-content input {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid var(--gray);
+      font-size: 15px;
+    }
+    
+    .modal-content button {
+      width: 100%;
+      padding: 14px;
+      background-color: var(--primary-blue);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .modal-content button:hover {
+      background-color: var(--dark-blue);
+    }
+    
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 24px;
+      color: var(--gray);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .close:hover {
+      color: var(--primary-blue);
+    }
+    
+    #reset-status {
+      margin-top: 15px;
+      font-size: 14px;
+      text-align: center;
+      padding: 8px;
+      border-radius: 6px;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      body {
+        justify-content: center;
+        padding: 20px;
+      }
+      
+      .login-container {
+        margin-right: 0;
+        width: 100%;
+        max-width: 400px;
+      }
+      
+      .page-back-button {
+        top: 20px;
+        left: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="{% url 'home' %}" class="page-back-button">&#x2B05;</a>
+
+  <div class="login-container">
+    <h2>Alumni Login</h2>
+
+    {% if messages %}
+    <div class="messages">
+      <ul>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <form action="{% url 'alumni_login' %}" method="post">
+      {% csrf_token %}
+      <div class="input-box">
+        <input type="email" name="email" placeholder="Email" required>
+      </div>
+      <div class="input-box">
+        <input type="password" name="password" placeholder="Password" required>
+      </div>
+      <div class="forgot-password">
+        <a href="javascript:void(0);" onclick="openModal()">Forgot Password?</a>
+      </div>
+      <button type="submit">Login</button>
+      <p class="signup-link">Don't have an account? <a href="{% url 'alumni_signup_page' %}">Signup</a></p>
+    </form>
+  </div>
+
+  <!-- Password Reset Modal -->
+  <div id="resetModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h3>Reset Password</h3>
+      <input type="email" id="resetEmail" placeholder="Enter your registered email">
+      <button onclick="sendResetEmail()">Send Reset Link</button>
+      <div id="reset-status"></div>
+    </div>
+  </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyA3AJjjQBebsndzTO2-n524qz8BV5bGCtI",
+      authDomain: "first-be575.firebaseapp.com",
+      projectId: "first-be575",
+      storageBucket: "first-be575.appspot.com",
+      messagingSenderId: "597942238551",
+      appId: "1:597942238551:web:8c78d8c153c5fa5f4e5212",
+      measurementId: "G-S4QZTD5DPC"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    // Modal functions
+    function openModal() {
+      const modal = document.getElementById("resetModal");
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal() {
+      const modal = document.getElementById("resetModal");
+      modal.classList.remove("active");
+      document.body.style.overflow = "auto";
+      document.getElementById("reset-status").innerText = "";
+      document.getElementById("resetEmail").value = "";
+    }
+
+    function sendResetEmail() {
+      const email = document.getElementById('resetEmail').value;
+      const status = document.getElementById('reset-status');
+
+      if (!email) {
+        status.style.color = "var(--error-red)";
+        status.innerHTML = "Please enter your email address";
+        return;
+      }
+
+      firebase.auth().sendPasswordResetEmail(email)
+        .then(() => {
+          status.style.color = "var(--success-green)";
+          status.innerHTML = "Password reset email sent!<br>Please check your inbox.";
+        })
+        .catch((error) => {
+          status.style.color = "var(--error-red)";
+          status.innerHTML = "Error: " + error.message;
+        });
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modal = document.getElementById("resetModal");
+      if (event.target == modal) {
+        closeModal();
+      }
+    }
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === "Escape") {
+        closeModal();
+      }
+    });
+  </script>
+
+</body>
+</html>

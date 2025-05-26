@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Apply Now - Alumni Job Portal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      margin: 0;
+      padding: 20px;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      max-width: 750px;
+      margin: 40px auto;
+      padding: 40px 45px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, #4CAF50, #2E7D32);
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+      font-size: 28px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, #4CAF50, #2E7D32);
+      border-radius: 3px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 20px;
+      color: #34495e;
+      font-size: 15px;
+    }
+
+    .input-group {
+      position: relative;
+      margin-top: 8px;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #7f8c8d;
+      font-size: 16px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="file"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px 15px 12px 40px;
+      margin-top: 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      font-size: 15px;
+      background-color: #f9f9f9;
+    }
+
+    input[type="file"] {
+      padding: 10px;
+    }
+
+    input:not([type="file"]):focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: #4CAF50;
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+      background-color: #fff;
+    }
+
+    textarea {
+      resize: vertical;
+      height: 120px;
+      padding-left: 15px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 20px;
+    }
+
+    .form-col {
+      flex: 1;
+    }
+
+    .consent {
+      margin-top: 25px;
+      display: flex;
+      align-items: flex-start;
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #eee;
+    }
+
+    .consent input[type="checkbox"] {
+      margin-right: 12px;
+      margin-top: 3px;
+      accent-color: #4CAF50;
+    }
+
+    .consent label {
+      margin-top: 0;
+      color: #555;
+      font-weight: 500;
+    }
+
+    .btn {
+      margin-top: 30px;
+      padding: 14px;
+      width: 100%;
+      background: linear-gradient(135deg, #4CAF50, #2E7D32);
+      border: none;
+      color: white;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .btn:hover {
+      background: linear-gradient(135deg, #3e8e41, #1B5E20);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: #ecf0f1;
+      margin-bottom: 30px;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #4CAF50, #2E7D32);
+      animation: progressAnimation 2s ease-in-out infinite;
+    }
+
+    @keyframes progressAnimation {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    .file-upload-wrapper {
+      position: relative;
+    }
+
+    .file-upload-label {
+      display: flex;
+      align-items: center;
+      padding: 12px 15px;
+      background: #f9f9f9;
+      border: 1px dashed #ccc;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .file-upload-label:hover {
+      border-color: #4CAF50;
+      background: #f1f8e9;
+    }
+
+    .file-upload-icon {
+      margin-right: 10px;
+      color: #4CAF50;
+      font-size: 18px;
+    }
+
+    .file-upload-input {
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .file-name {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #4CAF50;
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 30px 25px;
+        margin: 20px auto;
+      }
+      
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 25px 20px;
+      }
+      
+      h2 {
+        font-size: 24px;
+      }
+    }
+
+    /* Enhanced back button styles */
+    .back-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: #2c3e50;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .back-btn:hover {
+      background: #4CAF50;
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    
+    .back-btn:active {
+      transform: translateY(0) scale(1);
+    }
+
+    /* Success message */
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 30px;
+    }
+    
+    .success-icon {
+      color: #4CAF50;
+      font-size: 60px;
+      margin-bottom: 20px;
+      animation: bounce 1s;
+    }
+    
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+      40% {transform: translateY(-20px);}
+      60% {transform: translateY(-10px);}
+    }
+    
+    .success-message h3 {
+      color: #2E7D32;
+      margin-bottom: 10px;
+    }
+    
+    .success-message p {
+      color: #555;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <button class="back-btn" onclick="window.history.back()" title="Go back">
+    <i class="fas fa-arrow-left"></i>
+  </button>
+
+  <div class="container">
+    <div class="progress-bar">
+      <div class="progress"></div>
+    </div>
+    
+    <h2><i class="fas fa-briefcase" style="margin-right: 10px;"></i> Job Application</h2>
+    
+    <div id="applicationFormContainer">
+      <form id="applicationForm">
+        <div class="form-row">
+          <div class="form-col">
+            <label for="fullname">Full Name</label>
+            <div class="input-group">
+              <i class="fas fa-user input-icon"></i>
+              <input type="text" id="fullname" required>
+            </div>
+          </div>
+          <div class="form-col">
+            <label for="email">Email Address</label>
+            <div class="input-group">
+              <i class="fas fa-envelope input-icon"></i>
+              <input type="email" id="email" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-col">
+            <label for="phone">Phone Number</label>
+            <div class="input-group">
+              <i class="fas fa-phone input-icon"></i>
+              <input type="text" id="phone" required pattern="[0-9]{10}" title="Please enter a 10-digit phone number">
+            </div>
+          </div>
+          <div class="form-col">
+            <label for="graduation">Year of Graduation</label>
+            <div class="input-group">
+              <i class="fas fa-graduation-cap input-icon"></i>
+              <input type="text" id="graduation" required pattern="[0-9]{4}" title="Please enter a 4-digit graduation year">
+            </div>
+          </div>
+        </div>
+
+        <label for="university">University/College Name</label>
+        <div class="input-group">
+          <i class="fas fa-university input-icon"></i>
+          <input type="text" id="university" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-col">
+            <label for="degree">Degree/Program</label>
+            <div class="input-group">
+              <i class="fas fa-certificate input-icon"></i>
+              <input type="text" id="degree" required>
+            </div>
+          </div>
+          <div class="form-col">
+            <label for="branch">Branch/Specialization</label>
+            <div class="input-group">
+              <i class="fas fa-code-branch input-icon"></i>
+              <input type="text" id="branch" required>
+            </div>
+          </div>
+        </div>
+
+        <label for="cgpa">Current CGPA/Percentage</label>
+        <div class="input-group">
+          <i class="fas fa-percentage input-icon"></i>
+          <input type="text" id="cgpa">
+        </div>
+
+        <label>Upload Resume (PDF/DOC, max 5MB)</label>
+        <div class="file-upload-wrapper">
+          <label class="file-upload-label" for="resume">
+            <i class="fas fa-cloud-upload-alt file-upload-icon"></i>
+          </label>
+          <input type="file" id="resume" class="file-upload-input" accept=".pdf,.doc,.docx" required>
+          <div class="file-name" id="fileName"></div>
+        </div>
+
+        <label for="linkedin">LinkedIn Profile</label>
+        <div class="input-group">
+          <i class="fab fa-linkedin input-icon"></i>
+          <input type="text" id="linkedin">
+        </div>
+
+        <label for="github">GitHub/Portfolio Link</label>
+        <div class="input-group">
+          <i class="fab fa-github input-icon"></i>
+          <input type="text" id="github">
+        </div>
+
+        <label for="message">Cover Letter/Message</label>
+        <textarea id="message"></textarea>
+
+        <div class="consent">
+          <input type="checkbox" id="consent" required>
+          <label for="consent">I consent to share my information with the alumni/recruiter.</label>
+        </div>
+
+        <button type="submit" class="btn">
+          <i class="fas fa-paper-plane" style="margin-right: 8px;"></i> Submit Application
+        </button>
+      </form>
+    </div>
+    
+    <div class="success-message" id="successMessage">
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h3>Application Submitted Successfully!</h3>
+      <p>Thank you for applying. We'll review your application and get back to you soon.</p>
+      <button class="btn" onclick="resetForm()">
+        <i class="fas fa-plus" style="margin-right: 8px;"></i> Apply for Another Position
+      </button>
+    </div>
+  </div>
+
+  <!-- Firebase Scripts -->
+  <!-- Firebase App (the core Firebase SDK) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+
+
+<script>
+  // Initialize Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyA3AJjjQBebsndzTO2-n524qz8BV5bGCtI",
+    authDomain: "first-be575.firebaseapp.com",
+    projectId: "first-be575",
+    storageBucket: "first-be575.appspot.com",
+    messagingSenderId: "597942238551",
+    appId: "1:597942238551:web:8c78d8c153c5fa5f4e5212",
+    measurementId: "G-S4QZTD5DPC"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // File upload display
+  document.getElementById('resume').addEventListener('change', function(e) {
+    const fileName = e.target.files[0] ? e.target.files[0].name : 'No file chosen';
+    const fileNameElement = document.getElementById('fileName');
+    fileNameElement.textContent = fileName;
+    fileNameElement.style.display = 'block';
+  });
+
+  // Function to validate form fields
+  function validateForm() {
+    let isValid = true;
+    const requiredFields = [
+      { id: 'fullname', name: 'Full Name' },
+      { id: 'email', name: 'Email Address' },
+      { id: 'phone', name: 'Phone Number', pattern: /^\d{10}$/ },
+      { id: 'graduation', name: 'Year of Graduation', pattern: /^\d{4}$/ },
+      { id: 'university', name: 'University/College Name' },
+      { id: 'degree', name: 'Degree/Program' },
+      { id: 'branch', name: 'Branch/Specialization' },
+      { id: 'resume', name: 'Resume' }
+    ];
+
+    // Reset all error states
+    document.querySelectorAll('.error-message').forEach(el => el.remove());
+    document.querySelectorAll('.input-group input, .input-group textarea').forEach(input => {
+      input.style.borderColor = '#ddd';
+    });
+
+    // Check required fields
+    requiredFields.forEach(field => {
+      const element = document.getElementById(field.id);
+      if (field.id === 'resume') {
+        const fileInput = document.getElementById('resume');
+        if (!fileInput.files || fileInput.files.length === 0) {
+          showError(fileInput.parentElement, `${field.name} is required`);
+          isValid = false;
+        }
+      } else {
+        if (!element.value.trim()) {
+          showError(element, `${field.name} is required`);
+          isValid = false;
+        } else if (field.pattern && !field.pattern.test(element.value.trim())) {
+          showError(element, `Please enter a valid ${field.name}`);
+          isValid = false;
+        }
+      }
+    });
+
+    // Check consent checkbox
+    const consentCheckbox = document.getElementById('consent');
+    if (!consentCheckbox.checked) {
+      showError(consentCheckbox, 'You must consent to share your information');
+      isValid = false;
+    }
+
+    return isValid;
+  }
+
+  // Function to show error message
+  function showError(element, message) {
+    // Highlight the field
+    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+      element.style.borderColor = '#e74c3c';
+    } else if (element.tagName === 'LABEL') {
+      element.parentElement.querySelector('input').style.borderColor = '#e74c3c';
+    }
+
+    // Create error message element
+    const errorElement = document.createElement('div');
+    errorElement.className = 'error-message';
+    errorElement.style.color = '#e74c3c';
+    errorElement.style.fontSize = '13px';
+    errorElement.style.marginTop = '5px';
+    errorElement.innerHTML = `<i class="fas fa-exclamation-circle" style="margin-right: 5px;"></i>${message}`;
+
+    // Insert error message after the element
+    if (element.id === 'consent') {
+      element.parentElement.parentElement.appendChild(errorElement);
+    } else {
+      element.parentElement.appendChild(errorElement);
+    }
+  }
+
+  // Form submission
+  document.getElementById("applicationForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    // Validate form before submission
+    if (!validateForm()) {
+      return false;
+    }
+
+    // Show loading state
+    const submitBtn = document.querySelector('.btn[type="submit"]');
+    const originalBtnText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 8px;"></i> Processing...';
+    submitBtn.disabled = true;
+
+    const applicationData = {
+      fullname: document.getElementById("fullname").value,
+      email: document.getElementById("email").value,
+      phone: document.getElementById("phone").value,
+      university: document.getElementById("university").value,
+      degree: document.getElementById("degree").value,
+      branch: document.getElementById("branch").value,
+      graduation: document.getElementById("graduation").value,
+      cgpa: document.getElementById("cgpa").value,
+      linkedin: document.getElementById("linkedin").value,
+      github: document.getElementById("github").value,
+      message: document.getElementById("message").value,
+      consent: document.getElementById("consent").checked,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    db.collection("job_applications")
+      .add(applicationData)
+      .then(() => {
+        // Hide form and show success message
+        document.getElementById("applicationFormContainer").style.display = "none";
+        document.getElementById("successMessage").style.display = "block";
+        
+        // Reset button state
+        submitBtn.innerHTML = originalBtnText;
+        submitBtn.disabled = false;
+      })
+      .catch((error) => {
+        console.error("❌ Error:", error);
+        alert("Failed to submit. Please try again.");
+        
+        // Reset button state
+        submitBtn.innerHTML = originalBtnText;
+        submitBtn.disabled = false;
+      });
+  });
+
+  function resetForm() {
+    document.getElementById("applicationForm").reset();
+    document.getElementById("fileName").style.display = "none";
+    document.getElementById("applicationFormContainer").style.display = "block";
+    document.getElementById("successMessage").style.display = "none";
+    // Clear any error messages
+    document.querySelectorAll('.error-message').forEach(el => el.remove());
+    document.querySelectorAll('.input-group input, .input-group textarea').forEach(input => {
+      input.style.borderColor = '#ddd';
+    });
+  }
+</script>
+</body>
+</html>

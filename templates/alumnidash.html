@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Dashboard | Legacy Link</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #003366;
+            --secondary-color: #0055a5;
+            --accent-color: #ff6b00;
+            --light-color: #f8f9fa;
+            --dark-color: #2c3e50;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #e6f0ff, #cce0ff, #b3d1ff);
+            background-attachment: fixed;
+            background-size: cover;
+            color: var(--dark-color);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before, body::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            z-index: 0;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        body::before {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle at top left, #99c2ff, transparent 70%);
+            top: -200px;
+            left: -200px;
+        }
+
+        body::after {
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle at bottom right, #99c2ff, transparent 70%);
+            bottom: -250px;
+            right: -250px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-container .back-btn {
+            color: white;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo-container .back-btn:hover {
+            transform: translateX(-3px);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            margin: 0;
+            gap: 1.5rem;
+        }
+
+        nav ul li {
+            position: relative;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
+        }
+
+        nav ul li a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        nav ul li a i {
+            font-size: 1.1rem;
+        }
+
+        .dashboard {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .highlight {
+            color: var(--primary-color);
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+        }
+
+        .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-color);
+            transform: scaleX(0.8);
+            border-radius: 2px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            border-left: 5px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 51, 102, 0.05));
+            transform: rotate(45deg);
+            pointer-events: none;
+        }
+
+        .card h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card p {
+            color: #64748b;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: var(--transition);
+            font-weight: 600;
+            gap: 0.5rem;
+        }
+
+        .btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 51, 102, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i></a>
+            <span class="logo-text">LEGACY LINK</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="{% url 'alumni_profile' %}"><i class="fas fa-user"></i> Profile</a></li>
+                <li><a href="{% url 'alumni_network' %}"><i class="fas fa-users"></i> Network</a></li>
+                <li><a href="{% url 'alumni_jobboard' %}"><i class="fas fa-briefcase"></i> Jobs</a></li>
+                <li><a href="{% url 'alumni_announcements' %}"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+                <li>
+                    <a id="messagesLink" href="{% url 'alumni_chat' %}">
+                        <i class="fas fa-comments"></i> Messages
+                    </a>
+                </li>
+                <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="dashboard">
+        <h1>Welcome!!</h1>
+        
+        <div class="dashboard-grid">
+            <div class="card">
+                <h2><i class="fas fa-user-edit"></i> Profile</h2>
+                <p>Update your professional information and manage your visibility in the alumni network.</p>
+                <a href="{% url 'alumni_profile' %}" class="btn">Manage Profile</a>
+            </div>
+            <div class="card">
+                <h2><i class="fas fa-network-wired"></i> Network</h2>
+                <p>Connect with students and alumni across different industries and graduation years.</p>
+                <a href="{% url 'alumni_network' %}" class="btn">Explore Network</a>
+            </div>
+            <div class="card">
+                <h2><i class="fas fa-business-time"></i> Job Board</h2>
+                <p>Post or discover career opportunities within our alumni community.</p>
+                <a href="{% url 'alumni_jobboard' %}" class="btn">View Jobs</a>
+            </div>
+            <div class="card">
+                <h2><i class="fas fa-bullhorn"></i> Announcements</h2>
+                <p>Stay updated with the latest news and events from your alma mater.</p>
+                <a href="{% url 'alumni_announcements' %}" class="btn">Read More</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const alumniName = "{{ alumni_name }}";
+        localStorage.setItem("alumniName", alumniName);
+    </script>
+
+    <script type="module">
+        // Your existing Firebase script remains unchanged
+    </script>
+</body>
+</html>

@@ -1,0 +1,524 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        /* General reset and body styling */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        /* Header styling - Updated to blue theme */
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 40px;
+            background: linear-gradient(135deg, #003366 0%, #0055a5 100%);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+
+        header:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .profile-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Profile container */
+        .profile-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 51, 102, 0.15);
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: row;
+            gap: 40px;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 51, 102, 0.2);
+        }
+
+        /* Profile picture section */
+        .profile-pic {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 250px;
+            position: relative;
+        }
+
+        .profile-pic img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #003366;
+            margin-bottom: 20px;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(0, 51, 102, 0.2);
+        }
+
+        .profile-pic img:hover {
+            transform: scale(1.1) rotate(5deg);
+            border-color: #0055a5;
+            box-shadow: 0 8px 25px rgba(0, 85, 165, 0.3);
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, #003366 0%, #0055a5 100%);
+            color: white;
+            padding: 8px 16px;
+            font-size: 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 51, 102, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 51, 102, 0.3);
+            background: linear-gradient(135deg, #0055a5 0%, #0066cc 100%);
+        }
+
+        .upload-btn:active {
+            transform: translateY(1px);
+        }
+
+        .upload-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .upload-btn:hover::before {
+            left: 100%;
+        }
+
+        #fileUpload {
+            display: none;
+        }
+
+        /* Profile details form */
+        .profile-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            animation: slideInRight 0.5s ease;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .form-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .profile-details label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #003366;
+            transition: all 0.3s ease;
+        }
+
+        .profile-details input {
+            padding: 12px 15px;
+            font-size: 14px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.8);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .profile-details input:focus {
+            outline: none;
+            border-color: #007BFF;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .profile-details input:hover {
+            border-color: #aaa;
+        }
+
+        #saveProfile {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #003366 0%, #0055a5 100%);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            align-self: flex-start;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 51, 102, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #saveProfile:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 51, 102, 0.3);
+            background: linear-gradient(135deg, #0055a5 0%, #0066cc 100%);
+        }
+
+        #saveProfile:active {
+            transform: translateY(1px);
+        }
+
+        #saveProfile::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        #saveProfile:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 1;
+            }
+            20% {
+                transform: scale(25, 25);
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(40, 40);
+            }
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 768px) {
+            .profile-card {
+                flex-direction: column;
+                align-items: center;
+                padding: 30px;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            header {
+                padding: 15px;
+            }
+        }
+
+        /* Success message animation */
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transform: translateX(200%);
+            transition: transform 0.4s ease;
+        }
+
+        .success-message.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="profile-title">MY PROFILE</div>
+    </header>
+
+    <section class="profile-container">
+        <div class="profile-card">
+            <div class="profile-pic">
+                <img src="{% static 'images/user.png' %}" alt="Profile Picture" id="profileImage" class="animate__animated animate__fadeIn">
+                <input type="file" id="fileUpload" accept="image/*">
+                <label for="fileUpload" class="upload-btn animate__animated animate__fadeInUp">Change Picture</label>
+            </div>
+
+            <div class="profile-details">
+                {% csrf_token %}
+                <div class="form-row animate__animated animate__fadeInRight">
+                    <div class="form-group">
+                        <label>Name:</label>
+                        <input type="text" id="name">
+                    </div>
+                    <div class="form-group">
+                        <label>Batch:</label>
+                        <input type="text" id="batch">
+                    </div>
+                </div>
+
+                <div class="form-row animate__animated animate__fadeInRight animate__delay-1s">
+                    <div class="form-group">
+                        <label>Job Title:</label>
+                        <input type="text" id="jobTitle">
+                    </div>
+                    <div class="form-group">
+                        <label>Industry:</label>
+                        <input type="text" id="industry">
+                    </div>
+                </div>
+
+                <div class="form-row animate__animated animate__fadeInRight animate__delay-2s">
+                    <div class="form-group">
+                        <label>Company:</label>
+                        <input type="text" id="company">
+                    </div>
+                    <div class="form-group">
+                        <label>Location:</label>
+                        <input type="text" id="location">
+                    </div>
+                </div>
+
+                <div class="form-row animate__animated animate__fadeInRight animate__delay-3s">
+                    <div class="form-group">
+                        <label>Skills:</label>
+                        <input type="text" id="skills">
+                    </div>
+                </div>
+
+                <div class="form-row animate__animated animate__fadeInRight animate__delay-4s">
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="email" id="email">
+                    </div>
+                    <div class="form-group">
+                        <label>LinkedIn:</label>
+                        <input type="text" id="linkedin">
+                    </div>
+                </div>
+
+                <div class="form-row animate__animated animate__fadeInRight animate__delay-5s">
+                    <div class="form-group">
+                        <label>Website:</label>
+                        <input type="text" id="website">
+                    </div>
+                </div>
+
+                <button id="saveProfile" class="animate__animated animate__fadeInUp animate__delay-6s">Save Changes</button>
+            </div>
+        </div>
+    </section>
+
+    <div id="successMessage" class="success-message">Profile updated successfully!</div>
+
+    <script>
+        // Image preview
+        document.getElementById("fileUpload").addEventListener("change", function (event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const profileImage = document.getElementById("profileImage");
+                profileImage.src = reader.result;
+                profileImage.classList.add("animate__animated", "animate__pulse");
+                setTimeout(() => {
+                    profileImage.classList.remove("animate__animated", "animate__pulse");
+                }, 1000);
+            };
+            if (event.target.files[0]) {
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        });
+
+        // Load profile data
+        window.onload = function () {
+            fetch("/get_alumni_profile/")
+                .then(res => res.json())
+                .then(data => {
+                    if (data.profile) {
+                        document.getElementById("name").value = data.profile.name || '';
+                        document.getElementById("batch").value = data.profile.batch || '';
+                        document.getElementById("jobTitle").value = data.profile.job_title || '';
+                        document.getElementById("industry").value = data.profile.industry || '';
+                        document.getElementById("company").value = data.profile.company || '';
+                        document.getElementById("location").value = data.profile.location || '';
+                        document.getElementById("skills").value = data.profile.skills || '';
+                        document.getElementById("email").value = data.profile.email || '';
+                        document.getElementById("linkedin").value = data.profile.linkedin || '';
+                        document.getElementById("website").value = data.profile.website || '';
+                        if (data.profile.profile_picture) {
+                            document.getElementById("profileImage").src = data.profile.profile_picture;
+                        }
+                    }
+                })
+                .catch(err => console.error("Error loading profile:", err));
+        };
+
+        // CSRF helper
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== "") {
+                const cookies = document.cookie.split(";");
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.startsWith(name + "=")) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Save alumni profile with animation
+        document.getElementById("saveProfile").addEventListener("click", function () {
+            const saveButton = this;
+            const originalText = saveButton.textContent;
+            
+            // Add loading animation
+            saveButton.textContent = "Saving...";
+            saveButton.style.background = "linear-gradient(135deg, #0055a5 0%, #003366 100%)";
+            
+            const data = {
+                name: document.getElementById("name").value,
+                batch: document.getElementById("batch").value,
+                job_title: document.getElementById("jobTitle").value,
+                industry: document.getElementById("industry").value,
+                company: document.getElementById("company").value,
+                location: document.getElementById("location").value,
+                skills: document.getElementById("skills").value,
+                email: document.getElementById("email").value,
+                linkedin: document.getElementById("linkedin").value,
+                website: document.getElementById("website").value
+            };
+
+            fetch("/save_alumni_profile/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+                body: JSON.stringify(data)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    // Show success message
+                    const successMessage = document.getElementById("successMessage");
+                    successMessage.classList.add("show");
+                    
+                    // Animate the save button
+                    saveButton.textContent = "✓ Saved!";
+                    saveButton.style.background = "linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)";
+                    
+                    setTimeout(() => {
+                        successMessage.classList.remove("show");
+                        saveButton.textContent = originalText;
+                        saveButton.style.background = "linear-gradient(135deg, #003366 0%, #0055a5 100%)";
+                        
+                        // Add pulse animation to profile card
+                        const profileCard = document.querySelector(".profile-card");
+                        profileCard.classList.add("animate__animated", "animate__pulse");
+                        setTimeout(() => {
+                            profileCard.classList.remove("animate__animated", "animate__pulse");
+                        }, 1000);
+                    }, 3000);
+                })
+                .catch(err => {
+                    console.error("Error:", err);
+                    saveButton.textContent = "Error! Try Again";
+                    saveButton.style.background = "linear-gradient(135deg, #f44336 0%, #d32f2f 100%)";
+                    setTimeout(() => {
+                        saveButton.textContent = originalText;
+                        saveButton.style.background = "linear-gradient(135deg, #003366 0%, #0055a5 100%)";
+                    }, 2000);
+                });
+        });
+
+        // Add hover effect to all form inputs
+        const inputs = document.querySelectorAll(".profile-details input");
+        inputs.forEach(input => {
+            input.addEventListener("mouseenter", function() {
+                this.parentNode.querySelector("label").style.color = "#0055a5";
+                this.parentNode.querySelector("label").style.transform = "translateX(5px)";
+            });
+            
+            input.addEventListener("mouseleave", function() {
+                this.parentNode.querySelector("label").style.color = "#003366";
+                this.parentNode.querySelector("label").style.transform = "translateX(0)";
+            });
+        });
+    </script>
+</body>
+</html>

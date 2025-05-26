@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shiv Nadar - Visionary Alumni Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #5e35b1;
+      --secondary: #3949ab;
+      --accent: #ff7043;
+      --light: #f8f9fa;
+      --dark: #2d3436;
+      --gray: #636e72;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #edf7fa 100%);
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    .profile-container {
+      max-width: 900px;
+      background: #fff;
+      margin: 40px auto;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .profile-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+
+    .profile-header {
+      text-align: center;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    .profile-img-container {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    .profile-img {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 6px solid white;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+    }
+
+    .profile-img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    }
+
+    .profile-img-container::after {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      border-radius: 50%;
+      border: 3px dashed var(--secondary);
+      z-index: -1;
+      animation: rotate 20s linear infinite;
+    }
+
+    @keyframes rotate {
+      100% { transform: rotate(360deg); }
+    }
+
+    h1 {
+      font-size: 36px;
+      color: var(--primary);
+      margin: 15px 0 5px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    h2 {
+      font-size: 22px;
+      color: var(--gray);
+      margin-bottom: 25px;
+      font-weight: 500;
+    }
+
+    h3 {
+      font-size: 24px;
+      color: var(--primary);
+      margin: 30px 0 15px;
+      position: relative;
+      padding-bottom: 8px;
+    }
+
+    h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: 2px;
+    }
+
+    .details {
+      background: rgba(94, 53, 177, 0.08);
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      border-left: 4px solid var(--primary);
+    }
+
+    .details p {
+      margin: 15px 0;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .details span {
+      margin-right: 15px;
+      color: var(--primary);
+      font-size: 20px;
+      min-width: 24px;
+      text-align: center;
+    }
+
+    .bio {
+      text-align: justify;
+      color: var(--gray);
+      line-height: 1.8;
+      margin-bottom: 30px;
+      font-size: 17px;
+      padding: 0 10px;
+    }
+
+    .achievements {
+      padding-left: 25px;
+    }
+
+    .achievements li {
+      margin-bottom: 15px;
+      position: relative;
+      padding-left: 30px;
+      font-size: 16px;
+    }
+
+    .achievements li::before {
+      content: '✦';
+      position: absolute;
+      left: 0;
+      color: var(--secondary);
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .social-links a {
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      background: var(--primary);
+      padding: 12px 25px;
+      border-radius: 50px;
+      display: inline-flex;
+      align-items: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(94, 53, 177, 0.3);
+    }
+
+    .social-links a:hover {
+      background: var(--secondary);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(94, 53, 177, 0.4);
+    }
+
+    .social-links i {
+      margin-right: 10px;
+      font-size: 18px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: 600;
+      margin-left: 12px;
+      vertical-align: middle;
+      box-shadow: 0 3px 8px rgba(255, 112, 67, 0.3);
+    }
+
+    .company-logo {
+      height: 28px;
+      vertical-align: middle;
+      margin-left: 10px;
+      filter: drop-shadow(0 3px 3px rgba(0,0,0,0.1));
+    }
+
+    .highlight {
+      background: linear-gradient(120deg, rgba(57, 73, 171, 0.2) 0%, rgba(57, 73, 171, 0) 100%);
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    .quote {
+      font-style: italic;
+      color: var(--primary);
+      padding: 20px;
+      background: rgba(94, 53, 177, 0.05);
+      border-left: 4px solid var(--secondary);
+      border-radius: 0 8px 8px 0;
+      margin: 25px 0;
+      font-size: 17px;
+    }
+
+    @media (max-width: 768px) {
+      .profile-container {
+        padding: 30px 20px;
+        margin: 20px 10px;
+      }
+      
+      h1 {
+        font-size: 30px;
+      }
+      
+      .profile-img {
+        width: 160px;
+        height: 160px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="profile-container">
+  
+  <div class="profile-header">
+    <div class="profile-img-container">
+      <img src="{% static 'images/shiv_nadar.jpg' %}" alt="Shiv Nadar" class="profile-img">
+    </div>
+    
+    <h1>Shiv Nadar <span class="badge">Padma Bhushan</span></h1>
+    <h2>Founder & Chairman of <span class="highlight">HCL Technologies</span> <img src="https://logo.clearbit.com/hcltech.com" alt="HCL Technologies" class="company-logo" onerror="this.style.display='none'"></h2>
+  </div>
+
+  <div class="details">
+    <p><span><i class="fas fa-graduation-cap"></i></span><strong>B.E. Electrical and Electronics Engineering</strong> - PSG College of Technology (PSG Tech), Coimbatore (1967)</p>
+    <p><span><i class="fas fa-medal"></i></span><strong>Honors:</strong> Padma Bhushan (2008), Forbes Billionaires List</p>
+    <p><span><i class="fas fa-briefcase"></i></span><strong>Current:</strong> Chairman Emeritus, HCL Technologies | Founder, Shiv Nadar Foundation</p>
+  </div>
+
+  <div class="bio">
+    Shiv Nadar is the visionary architect of India's IT revolution and one of the country's most celebrated entrepreneurs. As the founder of HCL in 1976, he pioneered the computer hardware industry in India before transforming the company into a global IT services powerhouse. With a personal mission to "create value through innovation," Nadar built HCL into a $12 billion enterprise with operations in 50+ countries. His philanthropic initiatives through the Shiv Nadar Foundation have established premier educational institutions impacting thousands of students annually.
+  </div>
+
+  <div class="quote">
+    "The biggest risk is not taking any risk. In a world that's changing quickly, the only strategy that is guaranteed to fail is not taking risks."
+  </div>
+
+  <h3>Transformational Achievements</h3>
+  <ul class="achievements">
+    <li>Founded HCL in 1976 with ₹187,000, growing it into a global IT giant with $12 billion revenue</li>
+    <li>Pioneered computer hardware manufacturing in India during the license raj era</li>
+    <li>Led HCL's transformation into IT services, establishing India as a global technology hub</li>
+    <li>Ranked among <span class="highlight">India's top philanthropists</span>, having donated over $1 billion to education</li>
+    <li>Featured consistently in Forbes Billionaires List with net worth over $25 billion</li>
+    <li>Established <span class="highlight">Shiv Nadar University</span> and VidyaGyan schools for underprivileged students</li>
+  </ul>
+
+  <h3>PSG Tech Legacy</h3>
+  <ul class="achievements">
+    <li>Graduated with distinction in Electrical Engineering (1967 batch)</li>
+    <li>Active participant in technical symposiums and innovation challenges</li>
+    <li>Credited with bringing the first computer demonstration to PSG Tech campus</li>
+    <li>Established the <span class="highlight">Shiv Nadar Endowment Fund</span> for meritorious students</li>
+    <li>Frequently returns to campus as chief guest for convocations</li>
+  </ul>
+
+  <div class="social-links">
+    <a href="https://en.wikipedia.org/wiki/Shiv_Nadar" target="_blank">
+      <i class="fab fa-wikipedia-w"></i> Wikipedia Profile
+    </a>
+    <a href="https://www.hcltech.com/" target="_blank">
+      <i class="fas fa-building"></i> HCL Technologies
+    </a>
+    <a href="https://www.shivnadarfoundation.org/" target="_blank">
+      <i class="fas fa-hands-helping"></i> Nadar Foundation
+    </a>
+  </div>
+
+</div>
+
+</body>
+</html>
